@@ -3,8 +3,10 @@ import ACTIONS from "./MessageActions";
 import MessageContext from "./MessageContext";
 
 const reducer = (state = [], action) => {
-  if (!ACTIONS[action.type]) return state;
-  return ACTIONS[action.type](state, action.payload);
+  if (action.type === ACTIONS.ADD_MESSAGE) {
+    return [...state, action.payload];
+  }
+  return state;
 };
 
 const MessageState = ({ children }) => {

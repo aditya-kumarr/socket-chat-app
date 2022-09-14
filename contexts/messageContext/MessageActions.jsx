@@ -1,9 +1,6 @@
 const ACTIONS = {
-  ADD_MESSAGE: AddMessage,
+  ADD_MESSAGE: "ADD_MESSAGE",
 };
 
-export function AddMessage(state = [], message) {
-  return state.push(message);
-}
 
 export default ACTIONS;
