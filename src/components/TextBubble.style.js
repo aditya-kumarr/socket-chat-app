@@ -22,7 +22,7 @@ const TextBubble = styled.div`
       case "other":
         return `
             align-self:flex-start;
-            background-color: rgb(33, 33, 156)
+            background-color: rgb(33, 33, 156);
             margin-right:2em;
       `;
 
