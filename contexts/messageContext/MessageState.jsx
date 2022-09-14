@@ -1,16 +1,20 @@
-import React from 'react'
-import MessageContext from './MessageContext'
+import React, { useReducer } from "react";
+import ACTIONS from "./MessageActions";
+import MessageContext from "./MessageContext";
 
-const MessageState = ({children}) => {
+const reducer = (state = [], action) => {
+  if (!ACTIONS[action.type]) return state;
+  return ACTIONS[action.type](state, action.payload);
+};
 
-
-    // actions on messageState
+const MessageState = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, []);
 
   return (
-    <MessageContext.Provider>
-        {children}
+    <MessageContext.Provider value={{ state, dispatch }}>
+      {children}
     </MessageContext.Provider>
-  )
-}
+  );
+};
 
-export default MessageState
+export default MessageState;
