@@ -1,6 +1,6 @@
 const ACTIONS = {
   ADD_MESSAGE: "ADD_MESSAGE",
+  RECEIVE_MESSAGE: "RECEIVE_MESSAGE",
 };
-
 
 export default ACTIONS;
