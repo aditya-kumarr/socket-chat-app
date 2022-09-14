@@ -1,13 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-
-function MessageContainer({ children }) {
-  return (
-    <div className="card" id="text-container">
-      {children}
-    </div>
-  );
-}
+import { MessageContainer } from "./components/MessageContainer";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -16,7 +9,6 @@ function App() {
     e.preventDefault();
 
     // make a new text buble component and append it to the chilren array of thr message container
-    
   };
 
   return (
