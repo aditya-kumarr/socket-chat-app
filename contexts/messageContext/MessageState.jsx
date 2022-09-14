@@ -11,7 +11,9 @@ const MessageState = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, []);
 
   return (
-    <MessageContext.Provider value={{ state, dispatch }}>
+    <MessageContext.Provider
+      value={{ messages: state, messageDispatch: dispatch }}
+    >
       {children}
     </MessageContext.Provider>
   );
