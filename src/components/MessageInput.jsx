@@ -4,10 +4,10 @@ import messageContext from "../../contexts/messageContext/MessageContext";
 
 export function MessageInput() {
   const [message, setMessage] = useState("");
-  const { dispatch } = useContext(messageContext);
+  const { messageDispatch } = useContext(messageContext);
   const messegeSentHandler = (e) => {
     e.preventDefault();
-    dispatch({
+    messageDispatch({
       type: ACTIONS.ADD_MESSAGE,
       payload: { text: message, author: "me" },
     });
