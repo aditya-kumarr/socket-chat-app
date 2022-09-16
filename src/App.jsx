@@ -1,4 +1,4 @@
-import ACTIONS from "../contexts/messageContext/MessageActions";
+import ACTIONS from "../contexts/Actions";
 import "./App.css";
 import { MessageContainer } from "./components/MessageContainer";
 import { MessageInput } from "./components/MessageInput";

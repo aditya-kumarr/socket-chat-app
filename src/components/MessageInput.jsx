@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import ACTIONS from "../../contexts/messageContext/MessageActions";
+import ACTIONS from "../../contexts/Actions";
 import messageContext from "../../contexts/messageContext/MessageContext";
 
 export function MessageInput() {
