@@ -39,6 +39,7 @@ const ConnectionState = ({ children }) => {
       value={{
         pc: state.pc,
         socket: state.socket,
+        dataChannel: state.pc.dataChannel ?? null,
         connectionDispatch: dispatch,
       }}
     >

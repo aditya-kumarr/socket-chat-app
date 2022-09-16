@@ -32,6 +32,12 @@ export async function setOffer(pc, socket, id) {
     });
     console.log("got answer candidates");
   });
+  pc.dataChannel.onmessage = (e) => {
+    dispatch({
+      type: ACTIONS.RECEIVE_MESSAGE,
+      payload: message,
+    });
+  };
 }
 
 export async function getOffer(pc, socket, id) {
@@ -65,6 +71,12 @@ export async function getOffer(pc, socket, id) {
       pc.dataChannel = e.channel;
       pc.dataChannel.onopen = (e) => console.log("connectinon OPENED!");
       pc.dataChannel.onmessage = (e) => console.log(e.data);
+    };
+    pc.dataChannel.onmessage = (e) => {
+      dispatch({
+        type: ACTIONS.RECEIVE_MESSAGE,
+        payload: message,
+      });
     };
   });
 }
