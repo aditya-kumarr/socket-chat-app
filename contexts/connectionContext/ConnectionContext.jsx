@@ -1,5 +1,5 @@
 import { createContext } from "react";
 
-const webRTCcontext = createContext();
+const connectionContext = createContext();
 
 export default webRTCcontext;
