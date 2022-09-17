@@ -8,7 +8,7 @@ const MessageState = ({ children }) => {
   const reducer = (state = [], action) => {
     if (action.type === ACTIONS.ADD_MESSAGE) {
       // socket.emit("send-message", action.payload);
-      dataChannel.send(action.payload);
+      dataChannel.send(action.payload.text);
       return [...state, action.payload];
     }
     if (action.type === ACTIONS.RECEIVE_MESSAGE) {

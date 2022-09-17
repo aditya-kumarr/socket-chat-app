@@ -43,7 +43,7 @@ export const setOffer = async (
   dataChannel.onmessage = (e) => {
     dispatchMessage({
       type: ACTIONS.RECEIVE_MESSAGE,
-      payload: message,
+      payload: { text: e.data, author: "other" },
     });
   };
   dispatchConnection({
