@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { SButton, SFormControl, SFormTitle, SInput, SLable } from "../styles";
+import { ModalContext } from "./ModalContext";
 
 export function FormComponent({
   formArr,
@@ -15,6 +16,7 @@ export function FormComponent({
   const initialForm = prepareForm(formArr);
 
   const [form, setform] = useState(initialForm);
+  const { modalDispatch } = useContext(ModalContext);
 
   const onChangeHandler = (e) =>
     setform((p) => ({ ...p, [e.target.name]: e.target.value }));
@@ -27,6 +29,7 @@ export function FormComponent({
       onSubmit={(e) => {
         e.preventDefault();
         onSubmitAction(form);
+        modalDispatch({ type: "HIDE" });
       }}
     >
       <SFormTitle>{formTitle}</SFormTitle>

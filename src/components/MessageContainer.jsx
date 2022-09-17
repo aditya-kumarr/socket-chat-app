@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import messageContext from "../../contexts/messageContext/MessageContext";
+import messageContext from "../contexts/messageContext/MessageContext";
 import TextBubble from "./TextBubble.style";
 
 export function MessageContainer() {
