@@ -1,6 +1,5 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import ConnectionContext from "./ConnectionContext";
-import { getOffer, setOffer } from "./ConnectionHandler";
 import { io } from "socket.io-client";
 import ACTIONS from "../Actions";
 const socket = io("http://localhost:3000");
@@ -21,25 +20,38 @@ const pc = new RTCPeerConnection(servers);
 const reducer = (state = [], action) => {
   if (action.type === ACTIONS.SEND_OFFER) {
     // socket.emit("send-message", action.payload);
-    setOffer(pc, socket, action.roomID);
-    return { ...state, pc: pc };
+    return {
+      ...state,
+      pc: action.payload.pc,
+      dataChannel: action.payload.dataChannel,
+    };
   }
   if (action.type === ACTIONS.RECEIVE_OFFER) {
-    getOffer(pc, socket, action.roomID);
-    return { ...state, pc: pc };
+    return {
+      ...state,
+      pc: action.payload.pc,
+      dataChannel: action.payload.dataChannel,
+    };
   }
   return state;
 };
 
 const ConnectionState = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, { pc: pc, socket: socket });
+  const [state, dispatch] = useReducer(reducer, {
+    pc: pc,
+    socket: socket,
+    dataChannel: null,
+  });
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
 
   return (
     <ConnectionContext.Provider
       value={{
         pc: state.pc,
         socket: state.socket,
-        dataChannel: state.pc.dataChannel ?? null,
+        dataChannel: state.dataChannel,
         connectionDispatch: dispatch,
       }}
     >

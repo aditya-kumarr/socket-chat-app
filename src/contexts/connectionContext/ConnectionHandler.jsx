@@ -1,11 +1,19 @@
-export async function setOffer(pc, socket, id) {
+import ACTIONS from "../Actions";
+
+export const setOffer = async (
+  pc,
+  socket,
+  id,
+  dispatchMessage,
+  dispatchConnection
+) => {
   pc.onicecandidate = (event) => {
     event.candidate &&
       socket.emit("setOfferCandidate", event.candidate.toJSON());
   };
-  pc.dataChannel = pc.createDataChannel("channel");
-  pc.dataChannel.onopen = () => console.log("connected!");
-  pc.dataChannel.onmessage = (message) => console.log(message.data);
+  const dataChannel = pc.createDataChannel("channel");
+  dataChannel.onopen = () => console.log("connected!");
+  dataChannel.onmessage = (message) => console.log(message.data);
 
   // Create offer
   const offerDescription = await pc.createOffer();
@@ -32,17 +40,39 @@ export async function setOffer(pc, socket, id) {
     });
     console.log("got answer candidates");
   });
-  pc.dataChannel.onmessage = (e) => {
-    dispatch({
+  dataChannel.onmessage = (e) => {
+    dispatchMessage({
       type: ACTIONS.RECEIVE_MESSAGE,
       payload: message,
     });
   };
-}
+  dispatchConnection({
+    type: ACTIONS.SEND_OFFER,
+    payload: { pc, dataChannel, id },
+  });
+};
 
-export async function getOffer(pc, socket, id) {
-  console.log(pc.localDescription);
-  socket.emit("getOffer", id);
+export async function getOffer(
+  pc,
+  socket,
+  id,
+  dispatchConnection,
+  dispatchMessage
+) {
+  const dataChannelConnected = new Promise((resolve, reject) => {
+    pc.ondatachannel = (e) => {
+      console.log("should be first");
+      if (!e.channel) {
+        reject("e doesn't exists");
+      } else {
+        resolve(e.channel);
+      }
+    };
+  });
+
+  socket.emit("getOffer", id.roomID);
+  console.log("called get offer");
+
   socket.on("offer", async (offer) => {
     console.log("offer event called");
     pc.onicecandidate = (event) => {
@@ -67,16 +97,25 @@ export async function getOffer(pc, socket, id) {
         pc.addIceCandidate(new RTCIceCandidate(offerCandidate));
       });
     });
-    pc.ondatachannel = (e) => {
-      pc.dataChannel = e.channel;
-      pc.dataChannel.onopen = (e) => console.log("connectinon OPENED!");
-      pc.dataChannel.onmessage = (e) => console.log(e.data);
-    };
-    pc.dataChannel.onmessage = (e) => {
-      dispatch({
-        type: ACTIONS.RECEIVE_MESSAGE,
-        payload: message,
-      });
-    };
   });
+  const dataChannel = await dataChannelConnected;
+  dataChannel.onopen = (e) => console.log("connectinon OPENED!");
+  dataChannel.onmessage = (e) => console.log(e.data);
+  dataChannel.onmessage = (e) => {
+    console.log("e.data");
+    console.log(e.data);
+    dispatchMessage({
+      type: ACTIONS.RECEIVE_MESSAGE,
+      payload: { text: e.data, author: "other" },
+    });
+
+    console.log(dataChannel);
+    console.log("should be last");
+  };
+  console.log(dataChannel);
+  dispatchConnection({
+    type: ACTIONS.RECEIVE_OFFER,
+    payload: { pc, dataChannel, id },
+  });
+  socket.onerror((message) => console.log(message));
 }
