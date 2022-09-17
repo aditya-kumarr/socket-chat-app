@@ -9,18 +9,14 @@ const MessageState = ({ children }) => {
     if (action.type === ACTIONS.ADD_MESSAGE) {
       // socket.emit("send-message", action.payload);
       dataChannel.send(action.payload);
-      return [...state, action.payload.toString()];
+      return [...state, action.payload];
     }
     if (action.type === ACTIONS.RECEIVE_MESSAGE) {
-      return [...state, action.payload.toString()];
+      return [...state, action.payload];
     }
     return state;
   };
   const [state, dispatch] = useReducer(reducer, []);
-  useEffect(() => {
-    // first
-   
-  }, []);
 
   return (
     <MessageContext.Provider
