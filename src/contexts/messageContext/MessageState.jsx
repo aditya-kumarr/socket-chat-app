@@ -4,11 +4,9 @@ import MessageContext from "./MessageContext";
 import connectionContext from "./../connectionContext/ConnectionContext";
 
 const MessageState = ({ children }) => {
-  const { dataChannel } = useContext(connectionContext);
   const reducer = (state = [], action) => {
     if (action.type === ACTIONS.ADD_MESSAGE) {
       // socket.emit("send-message", action.payload);
-      dataChannel.send(action.payload.text);
       return [...state, action.payload];
     }
     if (action.type === ACTIONS.RECEIVE_MESSAGE) {
