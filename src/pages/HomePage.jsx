@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import { v4 as uuid } from "uuid";
 import ACTIONS from "../contexts/Actions";
@@ -19,6 +20,7 @@ const HomePage = () => {
   const { connectionDispatch, pc, socket } = useContext(connectionContext);
   const { messageDispatch } = useContext(messageContext);
   const { toastDispatch } = useContext(ToastContext);
+  const navigate = useNavigate();
 
   const createRoomHanlder = () => {
     const roomID = uuid();
@@ -29,7 +31,8 @@ const HomePage = () => {
       roomID,
       messageDispatch,
       connectionDispatch,
-      toastDispatch
+      toastDispatch,
+      navigate
     );
   };
   const joinRoomHandler = (data) => {
@@ -40,7 +43,8 @@ const HomePage = () => {
       data,
       messageDispatch,
       connectionDispatch,
-      toastDispatch
+      toastDispatch,
+      navigate
     );
   };
   return (

@@ -6,15 +6,21 @@ export const setOffer = async (
   id,
   dispatchMessage,
   dispatchConnection,
-  toastDispatch
+  toastDispatch,
+  navigate
 ) => {
   pc.onicecandidate = (event) => {
     event.candidate &&
       socket.emit("setOfferCandidate", event.candidate.toJSON());
   };
   const dataChannel = pc.createDataChannel("channel");
-  dataChannel.onopen = () => console.log("connected!");
-  dataChannel.onmessage = (message) => console.log(message.data);
+  dataChannel.onopen = () => {
+    toastDispatch({
+      type: "SHOW",
+      message: "Connected",
+    });
+    navigate("/chatpage");
+  };
 
   // Create offer
   const offerDescription = await pc.createOffer();
@@ -65,7 +71,8 @@ export async function getOffer(
   id,
   dispatchMessage,
   dispatchConnection,
-  toastDispatch
+  toastDispatch,
+  navigate
 ) {
   const dataChannelConnected = new Promise((resolve, reject) => {
     pc.ondatachannel = (e) => {
@@ -107,7 +114,13 @@ export async function getOffer(
     });
   });
   const dataChannel = await dataChannelConnected;
-  dataChannel.onopen = (e) => console.log("connectinon OPENED!");
+  dataChannel.onopen = (e) => {
+    toastDispatch({
+      type: "SHOW",
+      message: "Connected",
+    });
+    navigate("/chatpage");
+  };
   dataChannel.onmessage = (e) => console.log(e.data);
   dataChannel.onmessage = (e) => {
     console.log("e.data");

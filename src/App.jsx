@@ -15,7 +15,6 @@ function App() {
       <Router />
       <ModalRenderer />
       <Toaster />
-      <Link to="/chatpage">hello</Link>
     </AppContainer>
   );
 }
