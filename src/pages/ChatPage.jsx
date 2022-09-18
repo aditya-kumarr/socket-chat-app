@@ -11,7 +11,6 @@ const ChatPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("visiting chatpage");
     if (!dataChannel) navigate("/");
   }, []);
   return (

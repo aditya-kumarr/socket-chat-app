@@ -34,14 +34,12 @@ export const setOffer = async (
       const answerDescription = new RTCSessionDescription(answer);
       pc.setRemoteDescription(answerDescription);
     }
-    console.log(answer);
   });
   socket.on("getAnswerCandidate", (candidateData) => {
     candidateData.forEach((cand) => {
       const candidate = new RTCIceCandidate(cand);
       pc.addIceCandidate(candidate);
     });
-    console.log("got answer candidates");
   });
   dataChannel.onmessage = (e) => {
     messageDispatch({
@@ -57,7 +55,7 @@ export const setOffer = async (
     connectionDispatch({
       type: ACTIONS.DISCONNECT,
     });
-    
+
     // need to change the pc.peerConnection in this script
     navigate("/");
   };
@@ -69,6 +67,9 @@ export const setOffer = async (
     event.candidate &&
       socket.emit("setOfferCandidate", event.candidate.toJSON());
   };
+  socket.onerror((message) =>
+    toastDispatch({ type: "SHOW", message: message })
+  );
 };
 
 export async function getOffer(
@@ -82,7 +83,6 @@ export async function getOffer(
 ) {
   const dataChannelConnected = new Promise((resolve, reject) => {
     pc.ondatachannel = (e) => {
-      console.log("should be first");
       if (!e.channel) {
         reject("e doesn't exists");
       } else {
@@ -92,16 +92,12 @@ export async function getOffer(
   });
 
   socket.emit("getOffer", id.roomID);
-  console.log("called get offer");
 
   socket.on("offer", async (offer) => {
-    console.log("offer event called");
-
     const offerDescription = offer;
     await pc.setRemoteDescription(new RTCSessionDescription(offerDescription));
 
     const answerDescription = await pc.createAnswer();
-    console.log("setting local description");
     await pc.setLocalDescription(answerDescription);
     const answer = {
       type: answerDescription.type,
@@ -128,17 +124,11 @@ export async function getOffer(
     });
     navigate("/chatpage");
   };
-  dataChannel.onmessage = (e) => console.log(e.data);
   dataChannel.onmessage = (e) => {
-    console.log("e.data");
-    console.log(e.data);
     messageDispatch({
       type: ACTIONS.RECEIVE_MESSAGE,
       payload: { text: e.data, author: "other" },
     });
-
-    console.log(dataChannel);
-    console.log("should be last");
   };
   dataChannel.onclose = (e) => {
     toastDispatch({
@@ -150,11 +140,12 @@ export async function getOffer(
     });
     navigate("/");
   };
-  console.log(dataChannel);
   connectionDispatch({
     type: ACTIONS.RECEIVE_OFFER,
     payload: { pc, dataChannel, id },
   });
 
-  socket.onerror((message) => console.log(message));
+  socket.onerror((message) =>
+    toastDispatch({ type: "SHOW", message: message })
+  );
 }

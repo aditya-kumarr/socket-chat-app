@@ -36,7 +36,6 @@ const HomePage = () => {
     );
   };
   const joinRoomHandler = (data) => {
-    console.log("click");
     getOffer(
       pc,
       socket,

@@ -5,8 +5,6 @@ import TextBubble from "./TextBubble.style";
 
 export function MessageContainer() {
   const { messages } = useContext(messageContext);
-  console.log("message conatainer says:");
-  console.log(messages);
 
   return (
     <Container>

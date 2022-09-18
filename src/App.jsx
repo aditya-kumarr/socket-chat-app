@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import Toaster from "./Toast/Toaster";
 
 function App() {
-  console.log("re-rendered");
   return (
     <AppContainer>
       <Router />
