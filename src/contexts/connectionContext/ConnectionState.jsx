@@ -2,8 +2,7 @@ import React, { useReducer, useEffect, useState } from "react";
 import ConnectionContext from "./ConnectionContext";
 import { io } from "socket.io-client";
 import ACTIONS from "../Actions";
-const socket = io("http://localhost:3000");
-
+const socket = io("https://signaling-server-4go0.onrender.com");
 const servers = {
   iceServers: [
     {
@@ -39,6 +38,7 @@ const reducer = (state = [], action) => {
       ...state,
       pc: new RTCPeerConnection(servers),
       dataChannel: null,
+      socket: io("https://signaling-server-4go0.onrender.com"),
     };
   }
   return state;
@@ -50,9 +50,6 @@ const ConnectionState = ({ children }) => {
     socket: socket,
     dataChannel: null,
   });
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
 
   return (
     <ConnectionContext.Provider
