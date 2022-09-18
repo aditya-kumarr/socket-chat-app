@@ -22,7 +22,7 @@ export function MessageContainer() {
 const Container = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 90%;
   gap: 0.5em;
   flex-direction: column;
   padding: 0.25em;

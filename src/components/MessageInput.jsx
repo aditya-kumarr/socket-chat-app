@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import ACTIONS from "../contexts/Actions";
 import connectionContext from "../contexts/connectionContext/ConnectionContext";
@@ -9,6 +9,7 @@ export function MessageInput() {
   const { messageDispatch } = useContext(messageContext);
   const { dataChannel } = useContext(connectionContext);
 
+  const inputField = useRef(null);
   const messegeSentHandler = (e) => {
     e.preventDefault();
     messageDispatch({
@@ -20,11 +21,15 @@ export function MessageInput() {
     } catch (error) {
       console.log(error);
     }
+    setMessage("");
+    inputField.current.focus();
   };
 
   return (
     <MessageForm onSubmit={(e) => messegeSentHandler(e)}>
       <MessageField
+        autoComplete="off"
+        ref={inputField}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         type="text"
