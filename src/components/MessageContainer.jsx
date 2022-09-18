@@ -9,7 +9,7 @@ export function MessageContainer() {
   console.log(messages);
 
   return (
-    <Container id="text-container">
+    <Container>
       {messages.map((message, index) => (
         <TextBubble key={index} author={message.author}>
           {message.text}
@@ -20,9 +20,9 @@ export function MessageContainer() {
 }
 
 const Container = styled.div`
+  display: flex;
   width: 100%;
   height: 100%;
-  display: flex;
   gap: 0.5em;
   flex-direction: column;
   padding: 0.25em;
@@ -30,9 +30,18 @@ const Container = styled.div`
   border-radius: 1em;
   overflow-y: scroll;
   overflow-x: hidden;
-  height: 400px;
-  width: 300px;
+  /* min-height: 100vh; */
   & > *:first-child {
     margin-top: auto !important;
+  }
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  & {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 `;
