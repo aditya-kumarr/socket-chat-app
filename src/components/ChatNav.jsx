@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ACTIONS from "../contexts/Actions";
 import connectionContext from "../contexts/connectionContext/ConnectionContext";
@@ -10,7 +9,6 @@ import { SLable } from "../styles";
 const ChatNav = () => {
   const { pc, connectionDispatch } = useContext(connectionContext);
   const { modalDispatch } = useContext(ModalContext);
-  const navigate = useNavigate();
   const hanldeBackPress = () => {
     modalDispatch({
       type: "SHOW",
@@ -31,7 +29,6 @@ const ChatNav = () => {
         type: ACTIONS.DISCONNECT,
         payload: new RTCPeerConnection(),
       });
-      navigate("/");
     }
     modalDispatch({
       type: "HIDE",

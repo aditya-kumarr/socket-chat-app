@@ -58,6 +58,7 @@ export const setOffer = async (
       type: "SHOW",
       message: "Disconnected",
     });
+    navigate("/");
   };
   dispatchConnection({
     type: ACTIONS.SEND_OFFER,
@@ -138,6 +139,7 @@ export async function getOffer(
       type: "SHOW",
       message: "Disconnected",
     });
+    navigate("/");
   };
   console.log(dataChannel);
   dispatchConnection({
