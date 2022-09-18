@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build --base=/socket-chat-app",
-    "preview": "vite preview --host",
+    "build": "vite build",
+    "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
