@@ -5,7 +5,8 @@ export const setOffer = async (
   socket,
   id,
   dispatchMessage,
-  dispatchConnection
+  dispatchConnection,
+  toastDispatch
 ) => {
   pc.onicecandidate = (event) => {
     event.candidate &&
@@ -46,6 +47,12 @@ export const setOffer = async (
       payload: { text: e.data, author: "other" },
     });
   };
+  dataChannel.onclose = (e) => {
+    toastDispatch({
+      type: "SHOW",
+      message: "Disconnected",
+    });
+  };
   dispatchConnection({
     type: ACTIONS.SEND_OFFER,
     payload: { pc, dataChannel, id },
@@ -56,8 +63,9 @@ export async function getOffer(
   pc,
   socket,
   id,
+  dispatchMessage,
   dispatchConnection,
-  dispatchMessage
+  toastDispatch
 ) {
   const dataChannelConnected = new Promise((resolve, reject) => {
     pc.ondatachannel = (e) => {
@@ -112,10 +120,17 @@ export async function getOffer(
     console.log(dataChannel);
     console.log("should be last");
   };
+  dataChannel.onclose = (e) => {
+    toastDispatch({
+      type: "SHOW",
+      message: "Disconnected",
+    });
+  };
   console.log(dataChannel);
   dispatchConnection({
     type: ACTIONS.RECEIVE_OFFER,
     payload: { pc, dataChannel, id },
   });
+
   socket.onerror((message) => console.log(message));
 }

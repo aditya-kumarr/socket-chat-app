@@ -33,6 +33,14 @@ const reducer = (state = [], action) => {
       dataChannel: action.payload.dataChannel,
     };
   }
+  if (action.type === ACTIONS.DISCONNECT) {
+    // pc.setLocalDescription()
+    return {
+      ...state,
+      pc: new RTCPeerConnection(servers),
+      dataChannel: null,
+    };
+  }
   return state;
 };
 
