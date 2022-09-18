@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import styled from "styled-components";
 import ACTIONS from "../contexts/Actions";
 import connectionContext from "../contexts/connectionContext/ConnectionContext";
 import messageContext from "../contexts/messageContext/MessageContext";
@@ -22,15 +23,46 @@ export function MessageInput() {
   };
 
   return (
-    <form onSubmit={(e) => messegeSentHandler(e)} id="message-form">
-      <input
+    <MessageForm onSubmit={(e) => messegeSentHandler(e)}>
+      <MessageField
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         type="text"
         name="input-message"
-        id="input-message"
       />
-      <input type="submit" value="send" />
-    </form>
+      <SendBtn type="submit">send</SendBtn>
+    </MessageForm>
   );
 }
+
+export const SendBtn = styled.button`
+  cursor: pointer;
+  border-color: #646cff;
+  outline-color: #646cff;
+  outline-style: double;
+  border: 1px solid transparent;
+  border-radius: 0.5em;
+`;
+
+export const MessageField = styled.input`
+  padding: 0.2em;
+  border-radius: 5em;
+  border: 1px solid transparent;
+  /* min-width: 250px; */
+  width: 100%;
+  &:focus,
+  &:focus-visible {
+    border-color: #646cff;
+    outline-color: #646cff;
+    outline-style: double;
+    border: 1px solid transparent;
+  }
+`;
+
+export const MessageForm = styled.form`
+  display: flex;
+  margin-top: 1em;
+  justify-content: space-between;
+  gap: 0.5em;
+  width: 100%;
+`;
