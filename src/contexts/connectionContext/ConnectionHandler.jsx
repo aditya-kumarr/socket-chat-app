@@ -9,6 +9,9 @@ export const setOffer = async (
   toastDispatch,
   navigate
 ) => {
+  socket.on("onerror", (message) =>
+    toastDispatch({ type: "SHOW", message: message })
+  );
   const dataChannel = pc.createDataChannel("channel");
   dataChannel.onopen = () => {
     toastDispatch({
@@ -67,9 +70,6 @@ export const setOffer = async (
     event.candidate &&
       socket.emit("setOfferCandidate", event.candidate.toJSON());
   };
-  socket.onerror((message) =>
-    toastDispatch({ type: "SHOW", message: message })
-  );
 };
 
 export async function getOffer(
@@ -81,6 +81,9 @@ export async function getOffer(
   toastDispatch,
   navigate
 ) {
+  socket.on("onerror", (message) => {
+    toastDispatch({ type: "SHOW", message: message });
+  });
   const dataChannelConnected = new Promise((resolve, reject) => {
     pc.ondatachannel = (e) => {
       if (!e.channel) {
@@ -144,8 +147,4 @@ export async function getOffer(
     type: ACTIONS.RECEIVE_OFFER,
     payload: { pc, dataChannel, id },
   });
-
-  socket.onerror((message) =>
-    toastDispatch({ type: "SHOW", message: message })
-  );
 }
