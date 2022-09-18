@@ -1,4 +1,5 @@
 {
+  "homepage": "http://aditya-kumarr.github.io/socket-chat-app",
   "name": "socket-chat-app",
   "private": true,
   "version": "0.0.0",
@@ -6,7 +7,9 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "framer-motion": "^7.3.5",
