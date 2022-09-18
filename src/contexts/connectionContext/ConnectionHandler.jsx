@@ -4,15 +4,11 @@ export const setOffer = async (
   pc,
   socket,
   id,
-  dispatchMessage,
-  dispatchConnection,
+  messageDispatch,
+  connectionDispatch,
   toastDispatch,
   navigate
 ) => {
-  pc.onicecandidate = (event) => {
-    event.candidate &&
-      socket.emit("setOfferCandidate", event.candidate.toJSON());
-  };
   const dataChannel = pc.createDataChannel("channel");
   dataChannel.onopen = () => {
     toastDispatch({
@@ -48,7 +44,7 @@ export const setOffer = async (
     console.log("got answer candidates");
   });
   dataChannel.onmessage = (e) => {
-    dispatchMessage({
+    messageDispatch({
       type: ACTIONS.RECEIVE_MESSAGE,
       payload: { text: e.data, author: "other" },
     });
@@ -58,20 +54,29 @@ export const setOffer = async (
       type: "SHOW",
       message: "Disconnected",
     });
+    connectionDispatch({
+      type: ACTIONS.DISCONNECT,
+    });
+    
+    // need to change the pc.peerConnection in this script
     navigate("/");
   };
-  dispatchConnection({
+  connectionDispatch({
     type: ACTIONS.SEND_OFFER,
     payload: { pc, dataChannel, id },
   });
+  pc.onicecandidate = (event) => {
+    event.candidate &&
+      socket.emit("setOfferCandidate", event.candidate.toJSON());
+  };
 };
 
 export async function getOffer(
   pc,
   socket,
   id,
-  dispatchMessage,
-  dispatchConnection,
+  messageDispatch,
+  connectionDispatch,
   toastDispatch,
   navigate
 ) {
@@ -91,10 +96,7 @@ export async function getOffer(
 
   socket.on("offer", async (offer) => {
     console.log("offer event called");
-    pc.onicecandidate = (event) => {
-      event.candidate &&
-        socket.emit("setAnswerCandidate", event.candidate.toJSON());
-    };
+
     const offerDescription = offer;
     await pc.setRemoteDescription(new RTCSessionDescription(offerDescription));
 
@@ -104,6 +106,10 @@ export async function getOffer(
     const answer = {
       type: answerDescription.type,
       sdp: answerDescription.sdp,
+    };
+    pc.onicecandidate = (event) => {
+      event.candidate &&
+        socket.emit("setAnswerCandidate", event.candidate.toJSON());
     };
 
     // await callDoc.update({ answer });
@@ -126,7 +132,7 @@ export async function getOffer(
   dataChannel.onmessage = (e) => {
     console.log("e.data");
     console.log(e.data);
-    dispatchMessage({
+    messageDispatch({
       type: ACTIONS.RECEIVE_MESSAGE,
       payload: { text: e.data, author: "other" },
     });
@@ -139,10 +145,13 @@ export async function getOffer(
       type: "SHOW",
       message: "Disconnected",
     });
+    connectionDispatch({
+      type: ACTIONS.DISCONNECT,
+    });
     navigate("/");
   };
   console.log(dataChannel);
-  dispatchConnection({
+  connectionDispatch({
     type: ACTIONS.RECEIVE_OFFER,
     payload: { pc, dataChannel, id },
   });

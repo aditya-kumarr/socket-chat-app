@@ -25,10 +25,6 @@ const ChatNav = () => {
     // redirect to the '/'
     if (propmt) {
       pc.close();
-      connectionDispatch({
-        type: ACTIONS.DISCONNECT,
-        payload: new RTCPeerConnection(),
-      });
     }
     modalDispatch({
       type: "HIDE",
