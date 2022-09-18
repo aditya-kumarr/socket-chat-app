@@ -6,6 +6,7 @@ import ModalRenderer from "./Modal/ModalRenderer";
 import ChatPage from "./pages/ChatPage";
 import HomePage from "./pages/HomePage";
 import { Link } from "react-router-dom";
+import Toaster from "./Toast/Toaster";
 
 function App() {
   console.log("re-rendered");
@@ -13,6 +14,7 @@ function App() {
     <AppContainer>
       <Router />
       <ModalRenderer />
+      <Toaster />
       <Link to="/chatpage">hello</Link>
     </AppContainer>
   );
