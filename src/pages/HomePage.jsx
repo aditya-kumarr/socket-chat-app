@@ -46,6 +46,11 @@ const HomePage = () => {
       navigate
     );
   };
+  const copyInputHandler = () => {
+    if (roomInput === "") return;
+    navigator.clipboard.writeText(roomInput);
+    toastDispatch({ type: "SHOW", message: "copied text!" });
+  };
   return (
     <Spage>
       <SPageContainer>
@@ -74,7 +79,12 @@ const HomePage = () => {
           Join
         </SButton>
         <SButton onClick={createRoomHanlder}>Create A Room</SButton>
-        <SInput readOnly value={roomInput} />
+        <SInput
+          readOnly
+          value={roomInput}
+          onClick={copyInputHandler}
+          makePointer={roomInput}
+        />
       </SPageContainer>
     </Spage>
   );

@@ -35,6 +35,7 @@ export const SInput = styled.input`
   @media (min-width: 786px) {
     max-width: 40vw;
   }
+  ${({ makePointer }) => (makePointer ? `cursor:pointer;` : `cursor:auto`)}
 `;
 
 export const STextArea = styled.textarea`
